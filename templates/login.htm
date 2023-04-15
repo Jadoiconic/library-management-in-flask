@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Library Management System</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='plugins/fontawesome-free/css/all.min.css') }}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet"
+    href="{{ url_for('static',filename='plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='dist/css/adminlte.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='dist/css/login.css') }}">
+</head>
+
+<!-- <body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed"> -->
+
+<body>
+  {% include('navBar.htm') %}
+  <div class="wrapper">
+
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <h1><i class="fas fa-spinner fa-spin text-primary"></i></h1>
+      <h4>Loading</h4>
+    </div>
+  </div>
+
+  <!-- Login form section -->
+
+  <section class="vh-100" style="background-color: #ddd;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-xl-10">
+          <div class="card" style="border-radius: 1rem;">
+            <div class="row g-0">
+              <div class="col-md-6 col-lg-5 d-none d-md-block">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
+                  alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+              </div>
+              <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                <div class="card-body p-4 p-lg-5 text-black">
+
+                  <form action="/dashboard" method="post">
+
+                    <div class="d-flex align-items-center mb-3 pb-1 justify-content-center">
+                      <i class="fas fa-book fa-2x me-3" style="color: #ff6219;"></i>
+                      <span class="h1 fw-bold mb-0"> L.M.S</span>
+                    </div>
+
+                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
+
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="form2Example17">Email address</label>
+                      <input type="email" id="form2Example17" class="form-control form-control-lg" />
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="form2Example27">Password</label>
+                      <input type="password" id="form2Example27" class="form-control form-control-lg" />
+                    </div>
+
+                    <div class="pt-1 mb-4">
+                      <button class="btn btn-info btn-lg btn-block" type="submit">Login</button>
+                    </div>
+
+                    <a class="small text-muted" href="#!">Forgot password?</a>
+
+                    <a href="#!" class="small text-muted">Terms of use.</a>
+                    <a href="#!" class="small text-muted">Privacy policy</a>
+                  </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Main Footer -->
+  {% include('footer.htm') %}
+
+  <!-- ./wrapper -->
+
+  <!-- REQUIRED SCRIPTS -->
+  <!-- jQuery -->
+  <script src="{{ url_for('static',filename='plugins/jquery/jquery.min.js') }}"></script>
+  <!-- Bootstrap -->
+  <script src="{{ url_for('static',filename='plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <!-- overlayScrollbars -->
+  <script
+    src="{{ url_for('static',filename='plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+  <!-- AdminLTE App -->
+  <script src="{{ url_for('static',filename='dist/js/adminlte.js') }}"></script>
+
+  <!-- PAGE PLUGINS -->
+  <!-- jQuery Mapael -->
+  <script src="{{ url_for('static',filename='plugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
+  <script src="{{ url_for('static',filename='plugins/raphael/raphael.min.js') }}"></script>
+  <script src="{{ url_for('static',filename='plugins/jquery-mapael/jquery.mapael.min.js') }}"></script>
+  <script src="{{ url_for('static',filename='plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>
+  <!-- ChartJS -->
+  <script src="{{ url_for('static',filename='plugins/chart.js/Chart.min.js') }}"></script>
+
+  <script src="{{ url_for('static',filename='dist/js/pages/dashboard2.js') }}"></script>
+</body>
+
+</html>
