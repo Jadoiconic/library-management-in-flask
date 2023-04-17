@@ -14,7 +14,7 @@ mydb = mysql.connector.connect(
 )
 
 app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(seconds=7)
 
 mycursor = mydb.cursor()
 
@@ -55,19 +55,23 @@ def serviceView():
 
 @app.route('/dashboard')
 def dashboard():
+    if len(session) == 0: return render_template('login.htm',error='You must login First')
     user = session['user_id']
     return render_template('Admin/index.htm',user = user)
 
 @app.route('/profileSetting')
 def profileSetting():
+    if len(session) == 0: return redirect('/login')
     return render_template('Admin/account.htm')
 
 @app.route('/logout')
 def logout():
-    return render_template('login.htm')
+    session.clear()
+    return redirect('/login')
 
 @app.route('/data')
 def viewData():
+    if len(session) == 0: return redirect('/login')
     return render_template('Admin/data.htm')
 
 @app.route('/rent')
@@ -81,6 +85,9 @@ def manageUsers():
 @app.route('/report')
 def reportView():
     return render_template('Admin/report.htm')
+
+
+
 
 # app.run(host='localhost', port=3000)
 
