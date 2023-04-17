@@ -17,6 +17,8 @@
         href="{{ url_for('static',filename='plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ url_for('static',filename='dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
 </head>
 
 <body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -126,9 +128,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for x in range(10): %}
+                                    {% for x in range(1,40): %}
                                     <tr>
-                                        <th scope="row">1</th>
+                                        <th scope="row">{{x}}</th>
                                         <td>John</td>
                                         <td>Doe</td>
                                         <td>john@example.com</td>
@@ -142,18 +144,7 @@
                                 </tbody>
                             </table>
 
-                            <nav>
-                                <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                    <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                </ul>
-                            </nav>
+
                             <!-- Delete Modal -->
                             <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
                                 aria-hidden="true">
@@ -220,6 +211,13 @@
     <script src="{{ url_for('static',filename='plugins/chart.js/Chart.min.js') }}"></script>
 
     <script src="{{ url_for('static',filename='dist/js/pages/dashboard2.js') }}"></script>
+    <!-- data table js cdn -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+    </script>
 </body>
 
 </html>
