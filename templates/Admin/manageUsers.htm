@@ -126,7 +126,6 @@
                                         <th scope="col">First Name</th>
                                         <th scope="col">Last Name</th>
                                         <th scope="col">Email</th>
-                                        <th scope="col">Username</th>
                                         <th scope="col">ID</th>
                                         <th scope="col">CreatedAt</th>
                                         <th scope="col">Actions</th>
@@ -134,18 +133,17 @@
                                 </thead>
                                 <tbody>
 
-                                    {% for x in range(1,30): %}
+                                    {% for x in data: %}
                                     <tr>
-                                        <th scope="row">{{x}}</th>
-                                        <td>John</td>
-                                        <td>Doe</td>
-                                        <td>john@example.com</td>
-                                        <td>JohnDoe</td>
-                                        <td>11997800865356836</td>
-                                        <td>22/04/2023</td>
+                                        <th scope="row">#</th>
+                                        <td>{{x[1]}}</td>
+                                        <td>{{x[2]}}</td>
+                                        <td>{{x[3]}}</td>
+                                        <td>{{x[5]}}</td>
+                                        <td>{{x[6]}}</td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-primary">Edit</a>
-                                            <a href="#" class="btn btn-sm btn-danger" data-toggle="modal"
+                                            <a href="/edit/{{x[0]}}" class="btn btn-sm btn-primary">Edit</a>
+                                            <a href="delete/{{x[0]}}" class="btn btn-sm btn-danger" data-toggle="modal"
                                                 data-target="#deleteModal">Delete</a>
                                         </td>
                                     </tr>
@@ -153,7 +151,6 @@
                                 </tbody>
                             </table>
 
-                            
                             <!-- Delete Modal -->
                             <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
                                 aria-hidden="true">
@@ -161,8 +158,8 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                                            <button type="button" class="btn-close" data-dismiss="modal"
-                                                aria-label="Close"> &times;</button>
+                                            <button type="button" class="btn-close border-0 text-danger" data-dismiss="modal"
+                                                aria-label="Close"> <h2>&times;</h2></button>
                                         </div>
                                         <div class="modal-body">
                                             Are you sure you want to delete this record?
@@ -184,8 +181,8 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="registrationModalLabel">Registration Form</h5>
-                                            <h2 class="btn-close text-danger cursor-pointer" data-dismiss="modal"
-                                                aria-label="Close">&times;</h2>
+                                            <button class="btn-close btn-white border-0 text-danger" data-dismiss="modal"
+                                                aria-label="Close"><h2>&times;</h2></button>
                                         </div>
                                         <div class="modal-body">
                                             <form method="post" action="/register">
@@ -205,9 +202,9 @@
                                                         required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="username" class="form-label">Username</label>
-                                                    <input type="text" class="form-control" id="username"
-                                                        name="username" required>
+                                                    <label for="password" class="form-label">password</label>
+                                                    <input type="text" class="form-control" id="password"
+                                                        name="password" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="id" class="form-label">ID</label>

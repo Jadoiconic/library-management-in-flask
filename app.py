@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect
 import mysql.connector
 from datetime import timedelta
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
@@ -14,7 +15,7 @@ mydb = mysql.connector.connect(
 )
 
 app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(seconds=7)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)
 
 mycursor = mydb.cursor()
 
@@ -33,16 +34,20 @@ def login_post():
     password = request.form['password']
 
     #? Query the users table for the given username and password
-    mycursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+    mycursor.execute("SELECT * FROM users WHERE username = %s", [username])
     users = mycursor.fetchall()
-
-    # Check if the user exists
+    
     if users:
         #? Store the user ID in a session variable
-        session['user_id'] = list(users)
-        return redirect('/dashboard')
+        userPass = users[0][4]
+        if check_password_hash(userPass, password):
+            session['user_id'] = list(users)
+            return redirect('/dashboard')
+        else:
+            return render_template('login.htm', error='Incorect Password!')
+            
     else:
-        return render_template('login.htm', error='Invalid username or password')
+        return render_template('login.htm', error='User Not found!')
     
     
 @app.route('/about')
@@ -61,7 +66,7 @@ def dashboard():
 
 @app.route('/profileSetting')
 def profileSetting():
-    if len(session) == 0: return redirect('/login')
+    if len(session) == 0: return render_template('login.htm',error='You must login First')
     return render_template('Admin/account.htm')
 
 @app.route('/logout')
@@ -71,23 +76,40 @@ def logout():
 
 @app.route('/data')
 def viewData():
-    if len(session) == 0: return redirect('/login')
+    if len(session) == 0: return render_template('login.htm',error='You must login First')
     return render_template('Admin/data.htm')
 
 @app.route('/rent')
 def viewBookings():
+    if len(session) == 0: return render_template('login.htm',error='You must login First')
     return render_template('Admin/bookings.htm')
 
 @app.route('/manage')
 def manageUsers():
-    return render_template('Admin/manageUsers.htm')
+    if len(session) == 0: return render_template('login.htm',error='You must login First')
+    mycursor.execute("SELECT * FROM users")
+    data = mycursor.fetchall()
+    return render_template('Admin/manageUsers.htm',data=data)
 
 @app.route('/report')
 def reportView():
+    if len(session) == 0: return render_template('login.htm',error='You must login First')
     return render_template('Admin/report.htm')
 
+# admin data manipulations routes
 
-
+@app.route('/register',methods=['GET','POST'])
+def store():
+    fname = request.form['firstName']
+    lname = request.form['lastName']
+    email = request.form['email']
+    password = request.form['password']
+    passd = generate_password_hash(password)
+    uid = request.form['id']
+    sql = "INSERT INTO `users`(`fname`, `lname`, `username`, `password`, `pid`) VALUES (%s,%s,%s,%s,%s)"
+    mycursor.execute(sql,(fname,lname,email,passd,uid))
+    mydb.commit()
+    return render_template('Admin/manageUsers.htm',error = 'Data inserted Successfully!')
 
 # app.run(host='localhost', port=3000)
 
