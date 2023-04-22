@@ -29,16 +29,13 @@ def loginForm():
 
 @app.route('/signin', methods=['POST'])
 def login_post():
-    # Get form data
+    #? Get form data and data validation
     username = request.form['username']
     password = request.form['password']
-
-    #? Query the users table for the given username and password
+    
     mycursor.execute("SELECT * FROM users WHERE username = %s", [username])
     users = mycursor.fetchall()
-    
-    if users:
-        #? Store the user ID in a session variable
+    if users: 
         userPass = users[0][4]
         if check_password_hash(userPass, password):
             session['user_id'] = list(users)
@@ -84,12 +81,6 @@ def viewBookings():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
     return render_template('Admin/bookings.htm')
 
-@app.route('/manage')
-def manageUsers():
-    if len(session) == 0: return render_template('login.htm',error='You must login First')
-    mycursor.execute("SELECT * FROM users")
-    data = mycursor.fetchall()
-    return render_template('Admin/manageUsers.htm',data=data)
 
 @app.route('/report')
 def reportView():
@@ -97,6 +88,23 @@ def reportView():
     return render_template('Admin/report.htm')
 
 # admin data manipulations routes
+
+@app.route('/manage')
+def manageUsers():
+    if len(session) == 0: return render_template('login.htm',error='You must login First')
+    mycursor.execute("SELECT * FROM users")
+    data = mycursor.fetchall()
+    return render_template('Admin/manageUsers.htm',data=data)
+
+@app.route('/user/delete/<int:id>')
+def deleteUser(id):
+    id = str(id)
+    if len(session) == 0: return render_template('login.htm',error='You must login First')
+    query = "DELETE FROM users WHERE id ="+id+""
+    mycursor.execute(query)
+    mydb.commit()
+    return redirect('/manage')
+
 
 @app.route('/register',methods=['GET','POST'])
 def store():

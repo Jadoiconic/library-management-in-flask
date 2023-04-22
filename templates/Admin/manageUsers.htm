@@ -114,7 +114,7 @@
                     <div class="row">
 
                         <div class="col-md-12">
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                            <button type="button" class="btn btn-primary my-4" data-toggle="modal"
                                 data-target="#registrationModal">
                                 Add New User
                             </button>
@@ -132,7 +132,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     {% for x in data: %}
                                     <tr>
                                         <th scope="row">#</th>
@@ -140,11 +139,11 @@
                                         <td>{{x[2]}}</td>
                                         <td>{{x[3]}}</td>
                                         <td>{{x[5]}}</td>
-                                        <td>{{x[6]}}</td>
+                                        <td>{{x[7]}}</td>
                                         <td>
                                             <a href="/edit/{{x[0]}}" class="btn btn-sm btn-primary">Edit</a>
-                                            <a href="delete/{{x[0]}}" class="btn btn-sm btn-danger" data-toggle="modal"
-                                                data-target="#deleteModal">Delete</a>
+                                            <button onclick="$('#deleteval').attr('href','user/delete/{{x[0]}}');" class="btn btn-sm btn-danger" data-toggle="modal"
+                                                data-target="#deleteModal">Delete</button>
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -167,7 +166,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn btn-danger">Delete</button>
+                                            <a href="#" class="btn btn-danger" id="deleteval">Delete</a>
                                         </div>
                                     </div>
                                 </div>
