@@ -162,9 +162,8 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                                            <button type="button" class="btn-close border-0 text-danger"
-                                                data-dismiss="modal" aria-label="Close">
-                                                <h2>&times;</h2>
+                                            <button type="button" class="btn-close" data-dismiss="modal"
+                                                aria-label="Close">
                                             </button>
                                         </div>
                                         <div class="modal-body">
@@ -277,11 +276,11 @@
             $('#my_table').DataTable();
         });
 
-        setTimeout(function(){
+        setTimeout(function () {
             var myAlert = document.getElementById('myAlert');
             var bsAlert = new bootstrap.Alert(myAlert);
             bsAlert.close();
-          }, 2000);
+        }, 2000);
     </script>
 </body>
 

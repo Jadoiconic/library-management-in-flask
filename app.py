@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect
 import mysql.connector
 from datetime import timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
 
 app = Flask(__name__)
 
@@ -23,6 +24,7 @@ mycursor = mydb.cursor()
 def index():
     return render_template('index.htm')
 
+# user login validations
 @app.route('/login')
 def loginForm():
     return render_template('login.htm')
@@ -55,12 +57,14 @@ def aboutView():
 def serviceView():
     return render_template('service.htm')
 
+# dashboard manipulations
 @app.route('/dashboard')
 def dashboard():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
     user = session['user_id']
     return render_template('Admin/index.htm',user = user)
 
+# user profile setings
 @app.route('/profileSetting')
 def profileSetting():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
@@ -70,6 +74,7 @@ def profileSetting():
 def logout():
     session.clear()
     return redirect('/login')
+
 # books
 @app.route('/data')
 def viewData():
@@ -86,7 +91,7 @@ def viewBookings():
     data = mycursor.fetchall()
     return render_template('Admin/bookings.htm',data=data)
 
-
+# reports 
 @app.route('/report')
 def reportView():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
