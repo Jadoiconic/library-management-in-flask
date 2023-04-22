@@ -139,6 +139,7 @@
                                         <td>{{x[1]}}</td>
                                         <td>{{x[2]}}</td>
                                         <td>{{x[3]}}</td>
+                                        <td>{{x[4]}}</td>
                                         <td>{{x[5]}}</td>
                                         <td>{{x[6]}}</td>
                                         <td>{{x[7]}}</td>
@@ -183,11 +184,11 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="registrationModalLabel">Add New Book</h5>
-                                            <button class="btn-close btn-white border-0 text-danger" data-dismiss="modal"
-                                                aria-label="Close"><h2>&times;</h2></button>
+                                            <button class="btn-close btn-white" data-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form method="post" action="/addBook">
+                                            <form method="post" action="/addBook" enctype="multipart/form-data">
                                                 <div class="mb-3">
                                                     <label for="title" class="form-label">Book Title</label>
                                                     <input type="text" class="form-control" id="title"
@@ -205,8 +206,7 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="bookimage" class="form-label">Image</label>
-                                                    <input type="file" class="form-control" id="bookimage"
-                                                    name="bookimage" required>
+                                                    <input type="file" name="image" id="image" class="form-control" required>
                                                 </div>
                                                 
                                                 <div class="mb-3">

@@ -17,6 +17,8 @@ mydb = mysql.connector.connect(
 
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)
+UPLOAD_FOLDER = 'static/uploads/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 mycursor = mydb.cursor()
 
@@ -82,6 +84,24 @@ def viewData():
     mycursor.execute("SELECT *FROM books")
     data = mycursor.fetchall()
     return render_template('Admin/data.htm',data=data)
+
+@app.route('/addBook',methods=['POST'])
+def addBook():
+    # form data
+    title = request.form['title']
+    author = request.form['author']
+    publisher = request.form['publisher']
+    quantity = request.form['quantity']
+    file = request.files['image']
+    filename = file.filename
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+    sql = "INSERT INTO `books`(`title`, `auth`, `quantity`, `publisher`, `image`) VALUES (%s,%s,%s,%s,%s)"
+    res = mycursor.execute(sql,(title,author,quantity,publisher,filename))
+    mydb.commit()
+    if res:
+        status = "Data inserted Successfully!"
+        return render_template('Admin/data.htm',status=status)
+    return redirect('/data')
 
 # bookings
 @app.route('/rent')
