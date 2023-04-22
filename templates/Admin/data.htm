@@ -122,26 +122,30 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">First Name</th>
-                                        <th scope="col">Last Name</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">ID</th>
+                                        <th scope="col">Book title</th>
+                                        <th scope="col">Auth</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Publisher</th>
+                                        <th scope="col">Image</th>
                                         <th scope="col">CreatedAt</th>
+                                        <th scope="col">UpdatedAt</th>
                                         <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for x in [[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6]]: %}
+                                    {% for x in data: %}
                                     <tr>
                                         <th scope="row">#</th>
                                         <td>{{x[1]}}</td>
                                         <td>{{x[2]}}</td>
                                         <td>{{x[3]}}</td>
                                         <td>{{x[5]}}</td>
+                                        <td>{{x[6]}}</td>
+                                        <td>{{x[7]}}</td>
                                         <td></td>
                                         <td>
-                                            <a href="/edit/{{x[0]}}" class="btn btn-sm btn-primary">Edit</a>
-                                            <button onclick="$('#deleteval').attr('href','user/delete/{{x[0]}}');" class="btn btn-sm btn-danger" data-toggle="modal"
+                                            <a href="/book/edit/{{x[0]}}" class="btn btn-sm btn-primary">Edit</a>
+                                            <button onclick="$('#deleteval').attr('href','book/delete/{{x[0]}}');" class="btn btn-sm btn-danger" data-toggle="modal"
                                                 data-target="#deleteModal">Delete</button>
                                         </td>
                                     </tr>
@@ -202,7 +206,13 @@
                                                 <div class="mb-3">
                                                     <label for="bookimage" class="form-label">Image</label>
                                                     <input type="file" class="form-control" id="bookimage"
-                                                        name="bookimage" required>
+                                                    name="bookimage" required>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <label for="publisher" class="form-label">Quantity</label>
+                                                    <input type="number" class="form-control" id="publisher" name="quantity"
+                                                        required>
                                                 </div>
 
                                                 <button type="submit" class="btn btn-primary">Save</button>

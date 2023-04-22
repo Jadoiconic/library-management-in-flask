@@ -109,7 +109,11 @@
             <section class="content">
                 <div class="container-fluid">
                     <!-- Info boxes -->
-
+                    {% if status: %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert" id="myAlert">
+                        <h1>{{status}}</h1>
+                    </div>
+                    {% endif %}
                     <!-- Main row -->
                     <div class="row">
 
@@ -142,7 +146,8 @@
                                         <td>{{x[7]}}</td>
                                         <td>
                                             <a href="/edit/{{x[0]}}" class="btn btn-sm btn-primary">Edit</a>
-                                            <button onclick="$('#deleteval').attr('href','user/delete/{{x[0]}}');" class="btn btn-sm btn-danger" data-toggle="modal"
+                                            <button onclick="$('#deleteval').attr('href','user/delete/{{x[0]}}');"
+                                                class="btn btn-sm btn-danger" data-toggle="modal"
                                                 data-target="#deleteModal">Delete</button>
                                         </td>
                                     </tr>
@@ -157,8 +162,10 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                                            <button type="button" class="btn-close border-0 text-danger" data-dismiss="modal"
-                                                aria-label="Close"> <h2>&times;</h2></button>
+                                            <button type="button" class="btn-close border-0 text-danger"
+                                                data-dismiss="modal" aria-label="Close">
+                                                <h2>&times;</h2>
+                                            </button>
                                         </div>
                                         <div class="modal-body">
                                             Are you sure you want to delete this record?
@@ -180,8 +187,10 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="registrationModalLabel">Registration Form</h5>
-                                            <button class="btn-close btn-white border-0 text-danger" data-dismiss="modal"
-                                                aria-label="Close"><h2>&times;</h2></button>
+                                            <button class="btn-close btn-white border-0 text-danger"
+                                                data-dismiss="modal" aria-label="Close">
+                                                <h2>&times;</h2>
+                                            </button>
                                         </div>
                                         <div class="modal-body">
                                             <form method="post" action="/register">
@@ -207,7 +216,8 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="id" class="form-label">ID</label>
-                                                    <input type="text" class="form-control" id="id" name="id" required>
+                                                    <input type="text" maxlength="16" class="form-control" id="id"
+                                                        name="id" required>
                                                 </div>
 
                                                 <button type="submit" class="btn btn-primary">Save</button>
@@ -266,6 +276,12 @@
         $(document).ready(function () {
             $('#my_table').DataTable();
         });
+
+        setTimeout(function(){
+            var myAlert = document.getElementById('myAlert');
+            var bsAlert = new bootstrap.Alert(myAlert);
+            bsAlert.close();
+          }, 2000);
     </script>
 </body>
 

@@ -128,16 +128,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for x in range(1,40): %}
+                                    {% for x in data: %}
                                     <tr>
-                                        <th scope="row">{{x}}</th>
-                                        <td>John</td>
-                                        <td>Doe</td>
-                                        <td>john@example.com</td>
+                                        <th scope="row">#</th>
+                                        <td>{{x[1]}}</td>
+                                        <td>{{x[2]}}</td>
+                                        <td>{{x[3]}}</td>
+                                        <td>{{x[5]}}</td>
+                                        <td>{{x[6]}}</td>
+                                        <td>{{x[7]}}</td>
+                                        <td></td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-primary">Edit</a>
-                                            <a href="#" class="btn btn-sm btn-danger" data-toggle="modal"
-                                                data-target="#deleteModal">Delete</a>
+                                            <a href="/rent/edit/{{x[0]}}" class="btn btn-sm btn-primary">Edit</a>
+                                            <button onclick="$('#deleteval').attr('href','rent/delete/{{x[0]}}');" class="btn btn-sm btn-danger" data-toggle="modal"
+                                                data-target="#deleteModal">Delete</button>
                                         </td>
                                     </tr>
                                     {% endfor %}

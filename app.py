@@ -70,16 +70,21 @@ def profileSetting():
 def logout():
     session.clear()
     return redirect('/login')
-
+# books
 @app.route('/data')
 def viewData():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
-    return render_template('Admin/data.htm')
+    mycursor.execute("SELECT *FROM books")
+    data = mycursor.fetchall()
+    return render_template('Admin/data.htm',data=data)
 
+# bookings
 @app.route('/rent')
 def viewBookings():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
-    return render_template('Admin/bookings.htm')
+    mycursor.execute("SELECT *FROM bookings")
+    data = mycursor.fetchall()
+    return render_template('Admin/bookings.htm',data=data)
 
 
 @app.route('/report')
@@ -92,7 +97,7 @@ def reportView():
 @app.route('/manage')
 def manageUsers():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
-    mycursor.execute("SELECT * FROM users")
+    mycursor.execute("SELECT * FROM users WHERE status=1")
     data = mycursor.fetchall()
     return render_template('Admin/manageUsers.htm',data=data)
 
@@ -100,7 +105,8 @@ def manageUsers():
 def deleteUser(id):
     id = str(id)
     if len(session) == 0: return render_template('login.htm',error='You must login First')
-    query = "DELETE FROM users WHERE id ="+id+""
+    # query = "DELETE FROM users WHERE id ="+id+""
+    query = "UPDATE `users` SET `status` = '0' WHERE id ="+id+""
     mycursor.execute(query)
     mydb.commit()
     return redirect('/manage')
@@ -115,9 +121,12 @@ def store():
     passd = generate_password_hash(password)
     uid = request.form['id']
     sql = "INSERT INTO `users`(`fname`, `lname`, `username`, `password`, `pid`) VALUES (%s,%s,%s,%s,%s)"
-    mycursor.execute(sql,(fname,lname,email,passd,uid))
+    res = mycursor.execute(sql,(fname,lname,email,passd,uid))
     mydb.commit()
-    return render_template('Admin/manageUsers.htm',error = 'Data inserted Successfully!')
+    if res:
+        status = "Data inserted Successfully!"
+        return render_template('Admin/manageUsers.htm',status=status)
+    return redirect('/manage')
 
 # app.run(host='localhost', port=3000)
 
