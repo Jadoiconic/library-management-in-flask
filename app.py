@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, url_for,flash
 import mysql.connector
 from datetime import timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -55,11 +55,37 @@ def login_post():
 def aboutView():
     return render_template('about.htm')
 
+#client bookings
 @app.route('/books')
 def serviceView():
     mycursor.execute("SELECT *FROM books WHERE status='1'")
     data = mycursor.fetchall()
     return render_template('service.htm',data=data)
+
+# manipulate data for borrowing book
+@app.route('/borrow',methods=['GET','POST'])
+def borrowBook():
+    id = request.form['id']
+    fname = request.form['firstName']
+    lname = request.form['lastName']
+    names = fname+" "+ lname
+    phone = request.form['phone']
+    address = request.form['address']
+    email = request.form['email']
+    
+    mycursor.execute("SELECT *FROM books WHERE status='1' AND bookId="+id)
+    data = mycursor.fetchall()
+    print(data)
+    data = data[0][3]
+    if data > 0: 
+        mycursor.execute("UPDATE books SET quantity=quantity-1 WHERE status='1' AND bookId="+id)
+        qry = "INSERT INTO `bookings`(`names`, `bookId`, `address`, `phone`, `email`) VALUES (%s,%s,%s,%s,%s)"
+        mycursor.execute(qry,(names,id,address,phone,email))
+        mydb.commit()
+        flash('Your Request Sent!')
+        return redirect(url_for('serviceView'))
+    else:
+        return "No books available!"
 
 # dashboard manipulations
 @app.route('/dashboard')
@@ -180,4 +206,3 @@ def store():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    

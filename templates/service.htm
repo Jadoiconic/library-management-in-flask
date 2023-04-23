@@ -29,7 +29,19 @@
     </div>
 
     {% include('navBar.htm') %}
+
+
     <div class="row flex-row" style="min-height:90vh;">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alert alert-success" role="alert">
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
         <div class="col-md-10 px-4 py-4">
             {% for x in data: %}
             <div class="row mt-2">
@@ -62,8 +74,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="/register">
-                        <input type="text" class="form-control" id="id" name="id" required>
+                    <form method="post" action="/borrow">
+                        <input type="hidden" class="form-control" id="id" name="id" required>
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label for="firstName" class="form-label">First Name</label>
@@ -124,6 +136,11 @@
     <script src="{{ url_for('static',filename='plugins/chart.js/Chart.min.js') }}"></script>
 
     <script src="{{ url_for('static',filename='dist/js/pages/dashboard2.js') }}"></script>
+    <script>
+        setTimeout(function() {
+          document.querySelector('.alert').remove();
+        }, 5000); //
+    </script>
 </body>
 
 </html>
