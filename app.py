@@ -57,7 +57,9 @@ def aboutView():
 
 @app.route('/books')
 def serviceView():
-    return render_template('service.htm')
+    mycursor.execute("SELECT *FROM books WHERE status='1'")
+    data = mycursor.fetchall()
+    return render_template('service.htm',data=data)
 
 # dashboard manipulations
 @app.route('/dashboard')
@@ -70,7 +72,16 @@ def dashboard():
 @app.route('/profileSetting')
 def profileSetting():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
-    return render_template('Admin/account.htm')
+    user = {
+        'name': 'John Doe',
+        'username': 'johndoe',
+        'email': 'johndoe@example.com',
+        'age': 25,
+        'location': 'New York',
+        'website': 'https://example.com',
+        'avatar': 'https://randomuser.me/api/portraits/men/10.jpg'
+    }
+    return render_template('Admin/account.htm', user=user)
 
 @app.route('/logout')
 def logout():
@@ -81,13 +92,14 @@ def logout():
 @app.route('/data')
 def viewData():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
-    mycursor.execute("SELECT *FROM books")
+    mycursor.execute("SELECT *FROM books WHERE status='1'")
     data = mycursor.fetchall()
     return render_template('Admin/data.htm',data=data)
 
 @app.route('/addBook',methods=['POST'])
 def addBook():
     # form data
+    if len(session) == 0: return render_template('login.htm',error='You must login First')
     title = request.form['title']
     author = request.form['author']
     publisher = request.form['publisher']
@@ -101,6 +113,17 @@ def addBook():
     if res:
         status = "Data inserted Successfully!"
         return render_template('Admin/data.htm',status=status)
+    return redirect('/data')
+
+# deleting books
+@app.route('/book/delete/<int:id>')
+def deleteBooks(id):
+    id = str(id)
+    if len(session) == 0: return render_template('login.htm',error='You must login First')
+    # query = "DELETE FROM users WHERE id ="+id+""
+    query = "UPDATE `books` SET `status` = '0' WHERE bookId ="+id+""
+    mycursor.execute(query)
+    mydb.commit()
     return redirect('/data')
 
 # bookings
