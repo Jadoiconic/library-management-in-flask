@@ -151,10 +151,31 @@ def addBook():
     sql = "INSERT INTO `books`(`title`, `auth`, `quantity`, `publisher`, `image`) VALUES (%s,%s,%s,%s,%s)"
     res = mycursor.execute(sql,(title,author,quantity,publisher,filename))
     mydb.commit()
-    if res:
-        status = "Data inserted Successfully!"
-        return render_template('Admin/data.htm',status=status)
+    flash("Book have been added Successfully!")
     return redirect('/data')
+# editng and updating books
+
+@app.route('/book/edit/<int:id>')
+def editBook(id):
+    id = str(id)
+    mycursor.execute("SELECT *FROM books WHERE bookid="+id+"")
+    data = mycursor.fetchall()
+    return render_template('Admin/editBook.htm', data= data[0])
+
+# handle Update Book
+@app.route('/handleUpdateBook',methods=['POST'])
+def handleUpdateBook():
+    id = request.form['id']
+    author = request.form['author']
+    desc = request.form['publisher']
+    quantity = request.form['quantity']
+    title = request.form['title']
+    query = "UPDATE `books` SET `title` ='"+title+"',`auth` ='"+author+"',`quantity` ='"+quantity+"',`publisher` ='"+desc+"'  WHERE bookId ="+id+""
+    mycursor.execute(query)
+    mydb.commit()
+    flash('Book have been Updated!')
+    return redirect(url_for('viewData'))
+
 
 # deleting books
 @app.route('/book/delete/<int:id>')
@@ -165,6 +186,7 @@ def deleteBooks(id):
     query = "UPDATE `books` SET `status` = '0' WHERE bookId ="+id+""
     mycursor.execute(query)
     mydb.commit()
+    flash('Book have been deleted!')
     return redirect('/data')
 
 # bookings
@@ -175,6 +197,16 @@ def viewBookings():
     data = mycursor.fetchall()
     # return data 
     return render_template('Admin/bookings.htm',data=data)
+
+# approve bookings
+@app.route('/rent/approve/<int:id>')
+def approveBooking(id):
+    id = str(id)
+    query = "UPDATE `bookings` SET `status` = '1' WHERE id ="+id+""
+    mycursor.execute(query)
+    mydb.commit()
+    flash('You have approved this record!')
+    return redirect(url_for('viewBookings'))
 
 # reports 
 @app.route('/report')

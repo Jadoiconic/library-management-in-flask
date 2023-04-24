@@ -109,11 +109,7 @@
             <section class="content">
                 <div class="container-fluid">
                     <!-- Info boxes -->
-                    {% if status: %}
-                    <div class="alert alert-success alert-dismissible fade show" role="alert" id="myAlert">
-                        <h1>{{status}}</h1>
-                    </div>
-                    {% endif %}
+                  
                     
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}

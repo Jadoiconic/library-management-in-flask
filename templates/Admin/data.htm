@@ -110,6 +110,15 @@
                     <!-- Info boxes -->
 
                     <!-- Main row -->
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="alert alert-info text-center" role="alert">
+                        {% for message in messages %}
+                        {{ message }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
                     <div class="row">
 
                         <div class="col-md-12">
@@ -202,9 +211,9 @@
                                                         name="author" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="publisher" class="form-label">Publisher</label>
-                                                    <input type="text" class="form-control" id="publisher" name="publisher"
-                                                        required>
+                                                    <label for="publisher" class="form-label">Descipption</label>
+                                                    <textarea type="text" class="form-control" id="publisher" name="publisher"
+                                                        required></textarea>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="bookimage" class="form-label">Image</label>
@@ -266,6 +275,11 @@
     <!-- ChartJS -->
     <script src="{{ url_for('static',filename='plugins/chart.js/Chart.min.js') }}"></script>
     <script src="{{ url_for('static',filename='dist/js/pages/dashboard2.js') }}"></script>
+    <script>
+        setTimeout(function () {
+            document.querySelector('.alert').remove();
+        }, 5000); //
+    </script>
 </body>
 
 </html>
