@@ -126,10 +126,10 @@
                                         <th scope="col">Auth</th>
                                         <th scope="col">Quantity</th>
                                         <th scope="col">Publisher</th>
-                                        <th scope="col">Image</th>
                                         <th scope="col">CreatedAt</th>
                                         <th scope="col">UpdatedAt</th>
-                                        <th scope="col">Actions</th>
+                                        <th></th>
+                                        <th colspan="2" class="text-center bg-info" scope="col">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -140,12 +140,14 @@
                                         <td>{{x[2]}}</td>
                                         <td>{{x[3]}}</td>
                                         <td>{{x[4]}}</td>
-                                        <td>{{x[5]}}</td>
                                         <td>{{x[7]}}</td>
                                         <td>{{x[8]}}</td>
                                         <td></td>
                                         <td>
                                             <a href="/book/edit/{{x[0]}}" class="btn btn-sm btn-primary">Edit</a>
+                                            
+                                        </td>
+                                        <td>
                                             <button onclick="$('#deleteval').attr('href','book/delete/{{x[0]}}');" class="btn btn-sm btn-danger" data-toggle="modal"
                                                 data-target="#deleteModal">Delete</button>
                                         </td>
@@ -263,7 +265,6 @@
     <script src="{{ url_for('static',filename='plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>
     <!-- ChartJS -->
     <script src="{{ url_for('static',filename='plugins/chart.js/Chart.min.js') }}"></script>
-
     <script src="{{ url_for('static',filename='dist/js/pages/dashboard2.js') }}"></script>
 </body>
 
