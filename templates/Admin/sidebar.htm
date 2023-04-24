@@ -18,32 +18,20 @@
 
 
 
-            
+
             <!-- Services -->
+            
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fa fa-database"></i>
-                    <p>
-                        Data
-                        <i class="fas fa-angle-left right"></i>
-                    </p>
+                <a href="/data" class="nav-link">
+                    <i class="fa fa-eye nav-icon"></i>
+                    <p>View Books</p>
                 </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="/data" class="nav-link">
-                            <i class="fa fa-eye nav-icon"></i>
-                            <p>View Books</p>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="/rent" class="nav-link">
-                            <i class="fa fa-share nav-icon"></i>
-                            <p>Rent Books</p>
-                        </a>
-                    </li>
-                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="/rent" class="nav-link">
+                    <i class="fa fa-share nav-icon"></i>
+                    <p>Rent Books</p>
+                </a>
             </li>
             <!-- Settings -->
             <li class="nav-item">
@@ -54,7 +42,7 @@
                         <i class="fas fa-angle-left right"></i>
                     </p>
                 </a>
-                <ul class="nav nav-treeview" >
+                <ul class="nav nav-treeview">
                     <li class="nav-item">
                         <a href="/profileSetting" class="nav-link">
                             <i class="fas fa-user nav-icon"></i>
@@ -67,26 +55,25 @@
                             <p>Manage Users</p>
                         </a>
                     </li>
-                    
-                    <li class="nav-item">
-                        <a href="/logout" class="nav-link">
-                            <i class="fas fa-sign-out-alt nav-icon"></i>
-                            <p>Sign Out</p>
-                        </a>
-                    </li>
+
                 </ul>
             </li>
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
-                   with font-awesome or any other icon font library -->
+                    with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
                     <a href="/report" class="nav-link "><i class="fas fa-file-alt"></i>
                         <p>Report</p>
                     </a>
                 </li>
+            </ul>
+            <li class="nav-item">
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fas fa-sign-out-alt nav-icon"></i>
+                    <p>Sign Out</p>
+                </a>
+            </li>
     </nav>
     <!-- /.sidebar-menu -->
 </div>
 <!-- /.sidebar -->
-
-

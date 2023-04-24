@@ -112,8 +112,40 @@
                     <!-- Main row -->
                     <div class="row">
 
-                        <div class="col-md-12 d-flex justify-content-center">
-                           <h1>Data Profile Settings</h1>
+                        <div class="col-md-12">
+                           <div class="container mt-5">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <img src="{{ url_for('static',filename='uploads/'+session['user_id'][0][5]) }}" class="img-fluid rounded-circle mb-3" alt="User Avatar">
+                                    <h2>{{ session['user_id'][0][2] }}</h2>
+                                    <p>{{ session['user_id'][0][3] }}</p>
+                                </div>
+                                <div class="col-md-8">
+                                    <h3>Profile Information</h3>
+                                    <table class="table">
+                                        <tr>
+                                            <td><strong>First Name:</strong></td>
+                                            <td>{{ session['user_id'][0][1] }} </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Last Name:</strong></td>
+                                            <td>{{ session['user_id'][0][2] }} </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>National ID:</strong></td>
+                                            <td>{{ session['user_id'][0][6] }} </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Email Address:</strong></td>
+                                            <td><a href="mailto:{{ session['user_id'][0][3] }}?subject=Help%20Center">{{ session['user_id'][0][3] }}</a></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                
+                            </div>
+                            <button class="btn btn-primary px-5" data-toggle="modal"
+                            data-target="#changePassword ">Change Password</button>
+                        </div>
                         </div>
                         <!-- /.col -->
                     </div>
@@ -123,6 +155,43 @@
             </section>
             <!-- /.content -->
         </div>
+        <!-- Change password Modal -->
+        <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="changePasswordLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordLabel">Change Password</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="/change-password">
+                        <div class="mb-3">
+                            <label for="cpassword" class="form-label">Current Password</label>
+                            <input type="password" class="form-control" id="cpassword"
+                                name="cpassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">New Password</label>
+                            <input type="password" class="form-control" id="password"
+                                name="password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="repassword" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="repassword"
+                                name="repassword" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
         <!-- /.content-wrapper -->
 
         <!-- Control Sidebar -->
