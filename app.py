@@ -156,8 +156,9 @@ def deleteBooks(id):
 @app.route('/rent')
 def viewBookings():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
-    mycursor.execute("SELECT *FROM bookings")
+    mycursor.execute("SELECT *FROM bookings,books WHERE `bookings`.`bookId`=`books`.`bookId`")
     data = mycursor.fetchall()
+    # return data 
     return render_template('Admin/bookings.htm',data=data)
 
 # reports 

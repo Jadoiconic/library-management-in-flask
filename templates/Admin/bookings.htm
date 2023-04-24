@@ -122,7 +122,7 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Names</th>
-                                        <th scope="col">BookId</th>
+                                        <th scope="col">Book Name</th>
                                         <th scope="col">Address</th>
                                         <th scope="col">Phone</th>
                                         <th scope="col">Email</th>
@@ -136,14 +136,13 @@
                                     <tr>
                                         <th scope="row">#</th>
                                         <td>{{x[1]}}</td>
-                                        <td>{{x[2]}}</td>
+                                        <td>{{x[9]}}</td>
                                         <td>{{x[3]}}</td>
                                         <td>{{x[4]}}</td>
                                         <td>{{x[5]}}</td>
                                         <td>{{x[6]}}</td>
                                         <td>{{x[7]}}</td>
                                         <td>
-                                            <a href="/rent/edit/{{x[0]}}" class="btn btn-sm btn-primary">More Details</a>
                                             <button onclick="$('#deleteval').attr('href','rent/delete/{{x[0]}}');" class="btn btn-sm btn-danger" data-toggle="modal"
                                                 data-target="#deleteModal">Delete</button>
                                         </td>
