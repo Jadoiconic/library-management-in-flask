@@ -9,10 +9,10 @@ Clone the repository to your local machine using the command "git clone <reposit
 Download and install the latest version of Python from the official website 
 "https://www.python.org/downloads".
 
-Install the required dependencies by running the command "pip install -r requirements.txt".
-Set up the database by running the command "python manage.py db upgrade".
+Install the required dependencies by running the command ```pip install flask```.
+Set up the database by running the command ```python app.py db upgrade```.
 Usage
-To run the application, navigate to the project directory and run the command "python app.py runserver". or use run button when you are using vscode The application will start on the local host at port 5000.
+To run the application, navigate to the project directory and run the command ```python app.py```. or use run button when you are using vscode The application will start on the local host at port 5000.
 
 To access the application, open your web browser and go to "http://localhost:5000". From here, you can create a new account as a librarian, manage your book collection and borrowers, and issue books to borrowers.
 

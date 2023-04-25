@@ -37,7 +37,7 @@ def login_post():
     username = request.form['username']
     password = request.form['password']
     
-    mycursor.execute("SELECT * FROM users WHERE username = %s", [username])
+    mycursor.execute("SELECT * FROM users WHERE username = %s AND status=1", [username])
     users = mycursor.fetchall()
     if users: 
         userPass = users[0][4]
@@ -114,7 +114,7 @@ def changePassword():
             query = "UPDATE `users` SET `password` ='"+password+"' WHERE id ="+uid+""
             mycursor.execute(query)
             flash('Password have been changed!')
-            return redirect(url_for('profileSetting'))
+            return redirect(url_for('logout'))
         else:
             flash('Password Does not match!')
             return redirect(url_for('profileSetting'))
@@ -147,9 +147,10 @@ def addBook():
     quantity = request.form['quantity']
     file = request.files['image']
     filename = file.filename
+    uid = str(session['user_id'][0][0])
     file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-    sql = "INSERT INTO `books`(`title`, `auth`, `quantity`, `publisher`, `image`) VALUES (%s,%s,%s,%s,%s)"
-    res = mycursor.execute(sql,(title,author,quantity,publisher,filename))
+    sql = "INSERT INTO `books`(`title`, `auth`, `quantity`, `publisher`, `image`,`uid`) VALUES (%s,%s,%s,%s,%s,%s)"
+    mycursor.execute(sql,(title,author,quantity,publisher,filename,uid))
     mydb.commit()
     flash("Book have been added Successfully!")
     return redirect('/data')
@@ -181,8 +182,11 @@ def handleUpdateBook():
 @app.route('/book/delete/<int:id>')
 def deleteBooks(id):
     id = str(id)
+    
     if len(session) == 0: return render_template('login.htm',error='You must login First')
     # query = "DELETE FROM users WHERE id ="+id+""
+    
+    
     query = "UPDATE `books` SET `status` = '0' WHERE bookId ="+id+""
     mycursor.execute(query)
     mydb.commit()
@@ -202,7 +206,7 @@ def viewBookings():
 @app.route('/rent/approve/<int:id>')
 def approveBooking(id):
     id = str(id)
-    query = "UPDATE `bookings` SET `status` = '1' WHERE id ="+id+""
+    query = "UPDATE `bookings` SET `status` = '1', `updatedAt` =current_timestamp()  WHERE id ="+id+""
     mycursor.execute(query)
     mydb.commit()
     flash('You have approved this record!')
@@ -234,10 +238,14 @@ def deleteUser(id):
     id = str(id)
     if len(session) == 0: return render_template('login.htm',error='You must login First')
     # query = "DELETE FROM users WHERE id ="+id+""
-    query = "UPDATE `users` SET `status` = '0' WHERE id ="+id+""
-    mycursor.execute(query)
-    mydb.commit()
-    return redirect('/manage')
+    if str(session['user_id'][0][0]) == id: 
+        flash('You can\'t Delete your accout!')
+        return redirect('/manage')
+    else:
+        query = "UPDATE `users` SET `status` = '0' WHERE id ="+id+""
+        mycursor.execute(query)
+        mydb.commit()
+        return redirect('/manage')
 
 # update user
 @app.route('/user/edit/<int:id>')
