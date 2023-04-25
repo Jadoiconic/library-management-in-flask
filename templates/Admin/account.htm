@@ -13,7 +13,8 @@
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ url_for('static',filename='plugins/fontawesome-free/css/all.min.css') }}">
     <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="{{ url_for('static',filename='plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ url_for('static',filename='plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ url_for('static',filename='dist/css/adminlte.min.css') }}">
 </head>
@@ -23,7 +24,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <h1><i class="fas fa-spinner fa-spin text-primary"></i></h1> 
+            <h1><i class="fas fa-spinner fa-spin text-primary"></i></h1>
             <h4>Loading</h4>
         </div>
 
@@ -71,7 +72,7 @@
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
-                
+
 
             </ul>
         </nav>
@@ -85,7 +86,7 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-                
+
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
@@ -110,42 +111,54 @@
                     <!-- Info boxes -->
 
                     <!-- Main row -->
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="alert alert-info text-center" role="alert">
+                        {% for message in messages %}
+                        {{ message }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
                     <div class="row">
-
                         <div class="col-md-12">
-                           <div class="container mt-5">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <img src="{{ url_for('static',filename='uploads/'+session['user_id'][0][5]) }}" class="img-fluid rounded-circle mb-3" alt="User Avatar">
-                                    <h2>{{ session['user_id'][0][2] }}</h2>
-                                    <p>{{ session['user_id'][0][3] }}</p>
+                            <div class="container mt-5">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <img src="{{ url_for('static',filename='uploads/'+session['user_id'][0][5]) }}"
+                                            class="img-fluid rounded-circle mb-3" data-toggle="modal"
+                                            data-target="#changeProfile" alt="User Avatar">
+                                        <h2>{{ session['user_id'][0][2] }}</h2>
+                                        <p>{{ session['user_id'][0][3] }}</p>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h3>Profile Information</h3>
+                                        <table class="table">
+                                            <tr>
+                                                <td><strong>First Name:</strong></td>
+                                                <td>{{ session['user_id'][0][1] }} </td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Last Name:</strong></td>
+                                                <td>{{ session['user_id'][0][2] }} </td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>National ID:</strong></td>
+                                                <td>{{ session['user_id'][0][6] }} </td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Email Address:</strong></td>
+                                                <td><a
+                                                        href="mailto:{{ session['user_id'][0][3] }}?subject=Help%20Center">{{
+                                                        session['user_id'][0][3] }}</a></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+
                                 </div>
-                                <div class="col-md-8">
-                                    <h3>Profile Information</h3>
-                                    <table class="table">
-                                        <tr>
-                                            <td><strong>First Name:</strong></td>
-                                            <td>{{ session['user_id'][0][1] }} </td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Last Name:</strong></td>
-                                            <td>{{ session['user_id'][0][2] }} </td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>National ID:</strong></td>
-                                            <td>{{ session['user_id'][0][6] }} </td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Email Address:</strong></td>
-                                            <td><a href="mailto:{{ session['user_id'][0][3] }}?subject=Help%20Center">{{ session['user_id'][0][3] }}</a></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                
+                                <button class="btn btn-primary px-5" data-toggle="modal"
+                                    data-target="#changePassword ">Change Password</button>
                             </div>
-                            <button class="btn btn-primary px-5" data-toggle="modal"
-                            data-target="#changePassword ">Change Password</button>
-                        </div>
                         </div>
                         <!-- /.col -->
                     </div>
@@ -157,51 +170,71 @@
         </div>
         <!-- Change password Modal -->
         <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="changePasswordLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="changePasswordLabel">Change Password</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="post" action="/change-password">
-                        <div class="mb-3">
-                            <label for="cpassword" class="form-label">Current Password</label>
-                            <input type="password" class="form-control" id="cpassword"
-                                name="cpassword" required>
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <form method="post" action="/change-password">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="changePasswordLabel">Change Password</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">New Password</label>
-                            <input type="password" class="form-control" id="password"
-                                name="password" required>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="cpassword" class="form-label">Current Password</label>
+                                <input type="password" class="form-control" id="cpassword" name="cpassword" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="repassword" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="repassword" name="repassword" required>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="repassword" class="form-label">Confirm Password</label>
-                            <input type="password" class="form-control" id="repassword"
-                                name="repassword" required>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </div>
+                </form>
             </div>
         </div>
+        <!-- Change profile picture Modal -->
+        <div class="modal fade" id="changeImage" tabindex="-1" aria-labelledby="changeImageLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <form method="post" action="/changeImage">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="changeImageLabel">Change Profile Picture</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Choose image</label>
+                                <input type="file" class="form-control" id="image" name="image" required>
+                            </div>
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+        
     </div>
-        <!-- /.content-wrapper -->
+    <!-- /.content-wrapper -->
 
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
 
-        <!-- Main Footer -->
-        {% include('Admin/footer.htm') %}
+    <!-- Main Footer -->
+    {% include('Admin/footer.htm') %}
     </div>
     <!-- ./wrapper -->
 
@@ -211,7 +244,8 @@
     <!-- Bootstrap -->
     <script src="{{ url_for('static',filename='plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- overlayScrollbars -->
-    <script src="{{ url_for('static',filename='plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+    <script
+        src="{{ url_for('static',filename='plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ url_for('static',filename='dist/js/adminlte.js') }}"></script>
 
@@ -225,6 +259,11 @@
     <script src="{{ url_for('static',filename='plugins/chart.js/Chart.min.js') }}"></script>
 
     <script src="{{ url_for('static',filename='dist/js/pages/dashboard2.js') }}"></script>
+    <script>
+        setTimeout(function () {
+            document.querySelector('.alert').remove();
+        }, 5000); //
+    </script>
 </body>
 
 </html>

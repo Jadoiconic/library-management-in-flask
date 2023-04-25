@@ -37,7 +37,7 @@ def login_post():
     username = request.form['username']
     password = request.form['password']
     
-    mycursor.execute("SELECT * FROM users WHERE username = %s", [username])
+    mycursor.execute("SELECT * FROM users WHERE username = %s AND status=1", [username])
     users = mycursor.fetchall()
     if users: 
         userPass = users[0][4]
@@ -98,17 +98,32 @@ def dashboard():
 @app.route('/profileSetting')
 def profileSetting():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
-    user = {
-        'name': 'John Doe',
-        'username': 'johndoe',
-        'email': 'johndoe@example.com',
-        'age': 25,
-        'location': 'New York',
-        'website': 'https://example.com',
-        'avatar': 'https://randomuser.me/api/portraits/men/10.jpg'
-    }
-    return render_template('Admin/account.htm', user=user)
+    return render_template('Admin/account.htm')
 
+# change password for current user
+@app.route('/change-password',methods=['GET','POST'])
+def changePassword():
+    passd = session['user_id'][0][4]
+    uid = str(session['user_id'][0][0])
+    fpass = request.form['cpassword']
+    npass = request.form['password']
+    cnpass = request.form['repassword']
+    if check_password_hash(passd,fpass) :
+        if npass == cnpass:
+            password = generate_password_hash(npass)
+            query = "UPDATE `users` SET `password` ='"+password+"' WHERE id ="+uid+""
+            mycursor.execute(query)
+            flash('Password have been changed!')
+            return redirect(url_for('logout'))
+        else:
+            flash('Password Does not match!')
+            return redirect(url_for('profileSetting'))
+    else:
+        flash('Your current Password is incorrect Try again!')
+        return redirect(url_for('profileSetting'))
+
+
+# logon out method
 @app.route('/logout')
 def logout():
     session.clear()
@@ -132,24 +147,50 @@ def addBook():
     quantity = request.form['quantity']
     file = request.files['image']
     filename = file.filename
+    uid = str(session['user_id'][0][0])
     file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-    sql = "INSERT INTO `books`(`title`, `auth`, `quantity`, `publisher`, `image`) VALUES (%s,%s,%s,%s,%s)"
-    res = mycursor.execute(sql,(title,author,quantity,publisher,filename))
+    sql = "INSERT INTO `books`(`title`, `auth`, `quantity`, `publisher`, `image`,`uid`) VALUES (%s,%s,%s,%s,%s,%s)"
+    mycursor.execute(sql,(title,author,quantity,publisher,filename,uid))
     mydb.commit()
-    if res:
-        status = "Data inserted Successfully!"
-        return render_template('Admin/data.htm',status=status)
+    flash("Book have been added Successfully!")
     return redirect('/data')
+# editng and updating books
+
+@app.route('/book/edit/<int:id>')
+def editBook(id):
+    id = str(id)
+    mycursor.execute("SELECT *FROM books WHERE bookid="+id+"")
+    data = mycursor.fetchall()
+    return render_template('Admin/editBook.htm', data= data[0])
+
+# handle Update Book
+@app.route('/handleUpdateBook',methods=['POST'])
+def handleUpdateBook():
+    id = request.form['id']
+    author = request.form['author']
+    desc = request.form['publisher']
+    quantity = request.form['quantity']
+    title = request.form['title']
+    query = "UPDATE `books` SET `title` ='"+title+"',`auth` ='"+author+"',`quantity` ='"+quantity+"',`publisher` ='"+desc+"'  WHERE bookId ="+id+""
+    mycursor.execute(query)
+    mydb.commit()
+    flash('Book have been Updated!')
+    return redirect(url_for('viewData'))
+
 
 # deleting books
 @app.route('/book/delete/<int:id>')
 def deleteBooks(id):
     id = str(id)
+    
     if len(session) == 0: return render_template('login.htm',error='You must login First')
     # query = "DELETE FROM users WHERE id ="+id+""
+    
+    
     query = "UPDATE `books` SET `status` = '0' WHERE bookId ="+id+""
     mycursor.execute(query)
     mydb.commit()
+    flash('Book have been deleted!')
     return redirect('/data')
 
 # bookings
@@ -161,14 +202,30 @@ def viewBookings():
     # return data 
     return render_template('Admin/bookings.htm',data=data)
 
+# approve bookings
+@app.route('/rent/approve/<int:id>')
+def approveBooking(id):
+    id = str(id)
+    query = "UPDATE `bookings` SET `status` = '1', `updatedAt` =current_timestamp()  WHERE id ="+id+""
+    mycursor.execute(query)
+    mydb.commit()
+    flash('You have approved this record!')
+    return redirect(url_for('viewBookings'))
+
 # reports 
 @app.route('/report')
 def reportView():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
-    return render_template('Admin/report.htm')
+    # selecting rent books
+    mycursor.execute("SELECT *FROM bookings,books WHERE `bookings`.`bookId`=`books`.`bookId`")
+    booked = mycursor.fetchall()
+    # select books
+    mycursor.execute("SELECT *FROM books WHERE status='1'")
+    books = mycursor.fetchall()
+    n=1
+    return render_template('Admin/report.htm',booked=booked, books = books, n=n+1)
 
 # admin data manipulations routes
-
 @app.route('/manage')
 def manageUsers():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
@@ -181,14 +238,43 @@ def deleteUser(id):
     id = str(id)
     if len(session) == 0: return render_template('login.htm',error='You must login First')
     # query = "DELETE FROM users WHERE id ="+id+""
-    query = "UPDATE `users` SET `status` = '0' WHERE id ="+id+""
+    if str(session['user_id'][0][0]) == id: 
+        flash('You can\'t Delete your accout!')
+        return redirect('/manage')
+    else:
+        query = "UPDATE `users` SET `status` = '0' WHERE id ="+id+""
+        mycursor.execute(query)
+        mydb.commit()
+        return redirect('/manage')
+
+# update user
+@app.route('/user/edit/<int:id>')
+def editUser(id):
+    id = str(id)
+    if len(session) == 0: return render_template('login.htm',error='You must login First')
+    mycursor.execute("SELECT * FROM users WHERE id='"+id+"'")
+    data = mycursor.fetchall()
+    return render_template('Admin/editUsers.htm',data=data[0])
+
+# handle update user
+@app.route('/updateuser',methods=['GET','POST'])
+def handleUpdateUser():
+    if len(session) == 0: return render_template('login.htm',error='You must login First')
+    id = request.form['id']
+    fname = request.form['firstName']
+    lname = request.form['lastName']
+    email = request.form['email']
+    ident = request.form['identinty']
+    query = "UPDATE `users` SET `fname` = '"+fname+"',`lname` = '"+lname+"',`username` = '"+email+"',`pid` = '"+ident+"',`updatedAt` = current_timestamp() WHERE id ="+id+""
     mycursor.execute(query)
     mydb.commit()
-    return redirect('/manage')
+    flash('User Updated Successfly!')
+    return redirect(url_for('manageUsers'))
 
-
+# create user
 @app.route('/register',methods=['GET','POST'])
 def store():
+    if len(session) == 0: return render_template('login.htm',error='You must login First')
     fname = request.form['firstName']
     lname = request.form['lastName']
     email = request.form['email']
@@ -196,14 +282,11 @@ def store():
     passd = generate_password_hash(password)
     uid = request.form['id']
     sql = "INSERT INTO `users`(`fname`, `lname`, `username`, `password`, `pid`) VALUES (%s,%s,%s,%s,%s)"
-    res = mycursor.execute(sql,(fname,lname,email,passd,uid))
+    mycursor.execute(sql,(fname,lname,email,passd,uid))
     mydb.commit()
-    if res:
-        status = "Data inserted Successfully!"
-        return render_template('Admin/manageUsers.htm',status=status)
+    flash("Data inserted Successfully!")
     return redirect('/manage')
 
 # app.run(host='localhost', port=3000)
-
 if __name__ == '__main__':
     app.run(debug=True)

@@ -109,11 +109,17 @@
             <section class="content">
                 <div class="container-fluid">
                     <!-- Info boxes -->
-                    {% if status: %}
-                    <div class="alert alert-success alert-dismissible fade show" role="alert" id="myAlert">
-                        <h1>{{status}}</h1>
+                  
+                    
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="alert alert-info text-center" role="alert">
+                        {% for message in messages %}
+                        {{ message }}
+                        {% endfor %}
                     </div>
                     {% endif %}
+                    {% endwith %}
                     <!-- Main row -->
                     <div class="row">
 
@@ -132,6 +138,7 @@
                                         <th scope="col">Email</th>
                                         <th scope="col">ID</th>
                                         <th scope="col">CreatedAt</th>
+                                        <th scope="col">updatedAt</th>
                                         <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
@@ -142,10 +149,11 @@
                                         <td>{{x[1]}}</td>
                                         <td>{{x[2]}}</td>
                                         <td>{{x[3]}}</td>
-                                        <td>{{x[5]}}</td>
-                                        <td>{{x[7]}}</td>
+                                        <td>{{x[6]}}</td>
+                                        <td>{{x[8]}}</td>
+                                        <td>{{x[9]}}</td>
                                         <td>
-                                            <a href="/edit/{{x[0]}}" class="btn btn-sm btn-primary">Edit</a>
+                                            <a href="/user/edit/{{x[0]}}" class="btn btn-sm btn-primary">Edit</a>
                                             <button onclick="$('#deleteval').attr('href','user/delete/{{x[0]}}');"
                                                 class="btn btn-sm btn-danger" data-toggle="modal"
                                                 data-target="#deleteModal">Delete</button>
@@ -154,7 +162,6 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
-
                             <!-- Delete Modal -->
                             <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
                                 aria-hidden="true">
@@ -186,9 +193,7 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="registrationModalLabel">Registration Form</h5>
-                                            <button class="btn-close btn-white border-0 text-danger"
-                                                data-dismiss="modal" aria-label="Close">
-                                                <h2>&times;</h2>
+                                            <button class="btn-close" data-dismiss="modal" aria-label="Close">
                                             </button>
                                         </div>
                                         <div class="modal-body">
@@ -219,7 +224,11 @@
                                                         name="id" required>
                                                 </div>
 
-                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                <div class="d-flex justify-content-end">
+                                                    <button type="button" class="btn btn-secondary mx-2"
+                                                        data-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary px-5">Save</button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -277,10 +286,8 @@
         });
 
         setTimeout(function () {
-            var myAlert = document.getElementById('myAlert');
-            var bsAlert = new bootstrap.Alert(myAlert);
-            bsAlert.close();
-        }, 2000);
+            document.querySelector('.alert').remove();
+        }, 5000); 
     </script>
 </body>
 

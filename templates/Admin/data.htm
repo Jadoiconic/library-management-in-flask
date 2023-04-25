@@ -110,6 +110,15 @@
                     <!-- Info boxes -->
 
                     <!-- Main row -->
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="alert alert-info text-center" role="alert">
+                        {% for message in messages %}
+                        {{ message }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
                     <div class="row">
 
                         <div class="col-md-12">
@@ -126,10 +135,10 @@
                                         <th scope="col">Auth</th>
                                         <th scope="col">Quantity</th>
                                         <th scope="col">Publisher</th>
-                                        <th scope="col">Image</th>
                                         <th scope="col">CreatedAt</th>
                                         <th scope="col">UpdatedAt</th>
-                                        <th scope="col">Actions</th>
+                                        <th></th>
+                                        <th colspan="2" class="text-center bg-info" scope="col">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -140,12 +149,14 @@
                                         <td>{{x[2]}}</td>
                                         <td>{{x[3]}}</td>
                                         <td>{{x[4]}}</td>
-                                        <td>{{x[5]}}</td>
                                         <td>{{x[7]}}</td>
                                         <td>{{x[8]}}</td>
                                         <td></td>
                                         <td>
                                             <a href="/book/edit/{{x[0]}}" class="btn btn-sm btn-primary">Edit</a>
+                                            
+                                        </td>
+                                        <td>
                                             <button onclick="$('#deleteval').attr('href','book/delete/{{x[0]}}');" class="btn btn-sm btn-danger" data-toggle="modal"
                                                 data-target="#deleteModal">Delete</button>
                                         </td>
@@ -200,9 +211,9 @@
                                                         name="author" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="publisher" class="form-label">Publisher</label>
-                                                    <input type="text" class="form-control" id="publisher" name="publisher"
-                                                        required>
+                                                    <label for="publisher" class="form-label">Descipption</label>
+                                                    <textarea type="text" class="form-control" id="publisher" name="publisher"
+                                                        required></textarea>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="bookimage" class="form-label">Image</label>
@@ -213,7 +224,7 @@
                                                     <label for="publisher" class="form-label">Quantity</label>
                                                     <input type="number" class="form-control" id="publisher" name="quantity"
                                                         required>
-                                                </div>
+                                                </div> 
 
                                                 <button type="submit" class="btn btn-primary">Save</button>
                                             </form>
@@ -263,8 +274,12 @@
     <script src="{{ url_for('static',filename='plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>
     <!-- ChartJS -->
     <script src="{{ url_for('static',filename='plugins/chart.js/Chart.min.js') }}"></script>
-
     <script src="{{ url_for('static',filename='dist/js/pages/dashboard2.js') }}"></script>
+    <script>
+        setTimeout(function () {
+            document.querySelector('.alert').remove();
+        }, 5000); //
+    </script>
 </body>
 
 </html>
