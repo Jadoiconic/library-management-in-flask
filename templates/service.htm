@@ -78,17 +78,17 @@
                         <input type="hidden" class="form-control" id="id" name="id" required>
                         <div class="row">
                             <div class="mb-3 col-md-6">
-                                <label for="firstName" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="firstName" name="firstName" required>
+                                <label for="firstName"  class="form-label">First Name</label>
+                                <input type="text" pattern="[^0-9]+" class="form-control" id="firstName" name="firstName" required>
                             </div>
                             <div class="mb-3 col-md-6">
-                                <label for="lastName" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" name="lastName" required>
+                                <label for="lastName"  class="form-label">Last Name</label>
+                                <input type="text" pattern="[^0-9]+" class="form-control" id="lastName" name="lastName" required>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                            <input type="email" pattern="[^0-9]+" class="form-control" id="email" name="email" required>
                         </div>
                         <div class="mb-3">
                             <label for="address" class="form-label">Address</label>
@@ -96,7 +96,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="phone" class="form-label">Phone</label>
-                            <input type="text" maxlength="16" class="form-control" phone="phone" name="phone" required>
+                            <input type="number" maxlength="16" class="form-control" phone="phone" name="phone" required>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Send</button>

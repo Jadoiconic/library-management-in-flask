@@ -114,20 +114,20 @@
                         <div class="col">
                             <form method="post" action="/handleUpdateBook" enctype="multipart/form-data">
                                 <div class="mb-3">
-                                    <label for="title" class="form-label">Book Title</label>
+                                    <label for="title" pattern="[^0-9]+" class="form-label">Book Title</label>
                                     <input type="hidden" value="{{data[0]}}" class="form-control" id="id"
                                         name="id" required>
-                                    <input type="text" value="{{data[1]}}" class="form-control" id="title"
+                                    <input type="text" pattern="[^0-9]+" value="{{data[1]}}" class="form-control" id="title"
                                         name="title" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="author" class="form-label">Book Author</label>
-                                    <input type="text" value="{{data[2]}}" class="form-control" id="author"
+                                    <input type="text" pattern="[^0-9]+" value="{{data[2]}}" class="form-control" id="author"
                                         name="author" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="publisher" class="form-label">Description</label>
-                                    <textarea type="text" value="{{data[4]}}" class="form-control" id="publisher" name="publisher"
+                                    <textarea type="text" pattern="[^0-9]+" value="{{data[4]}}" class="form-control" id="publisher" name="publisher"
                                         required></textarea>
                                 </div>
                                

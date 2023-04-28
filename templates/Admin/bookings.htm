@@ -136,7 +136,7 @@
                                         <th scope="col">Phone</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">createdAt</th>
-                                        <th scope="col">UpdatedAt</th>
+                                        <th scope="col">ReturnedDate</th>
                                         <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
@@ -149,10 +149,10 @@
                                         <td>{{x[3]}}</td>
                                         <td>{{x[4]}}</td>
                                         <td>{{x[5]}}</td>
-                                        <td>{{x[7]}}</td>
                                         <td>{{x[8]}}</td>
+                                        <td>{{x[9]}}</td>
                                         <td>
-                                            {% if x[6] == 0:%}
+                                            {% if x[7] == 0:%}
                                             <button onclick="$('#deleteval').attr('href','rent/approve/{{x[0]}}');" class="btn btn-sm btn-success" data-toggle="modal"
                                                 data-target="#deleteModal">Approve</button>
                                             {% else: %}
