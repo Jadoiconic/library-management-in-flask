@@ -202,17 +202,17 @@
                                             <form method="post" action="/addBook" enctype="multipart/form-data">
                                                 <div class="mb-3">
                                                     <label for="title" class="form-label">Book Title</label>
-                                                    <input type="text" class="form-control" id="title"
+                                                    <input type="text" pattern="[^0-9]+" class="form-control" id="title"
                                                         name="title" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="author" class="form-label">Book Author</label>
-                                                    <input type="text" class="form-control" id="author"
+                                                    <input type="text" pattern="[^0-9]+" class="form-control" id="author"
                                                         name="author" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="publisher" class="form-label">Descipption</label>
-                                                    <textarea type="text" class="form-control" id="publisher" name="publisher"
+                                                    <label for="publisher"  class="form-label">Descipption</label>
+                                                    <textarea type="text" pattern="[^0-9]+" class="form-control" id="publisher" name="publisher"
                                                         required></textarea>
                                                 </div>
                                                 <div class="mb-3">

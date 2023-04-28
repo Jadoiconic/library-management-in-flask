@@ -115,14 +115,14 @@
                             <form method="post" action="/updateuser">
                                 <div class="mb-3">
                                     <label for="firstName" class="form-label">First Name</label>
-                                    <input type="hidden" value="{{data[0]}}" class="form-control" id="firstName"
+                                    <input type="hidden" pattern="[^0-9]+" value="{{data[0]}}" class="form-control" id="firstName"
                                         name="id">
-                                    <input type="text" value="{{data[1]}}" class="form-control" id="firstName"
+                                    <input type="text" pattern="[^0-9]+" value="{{data[1]}}" class="form-control" id="firstName"
                                         name="firstName" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="lastName" class="form-label">Last Name</label>
-                                    <input type="text" value="{{data[2]}}" class="form-control" id="lastName"
+                                    <input type="text" pattern="[^0-9]+" value="{{data[2]}}" class="form-control" id="lastName"
                                         name="lastName" required>
                                 </div>
                                 <div class="mb-3">

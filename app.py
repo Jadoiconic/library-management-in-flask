@@ -133,7 +133,7 @@ def logout():
 @app.route('/data')
 def viewData():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
-    mycursor.execute("SELECT *FROM books WHERE status='1'")
+    mycursor.execute("SELECT *FROM books WHERE status='1' ORDER BY bookid DESC")
     data = mycursor.fetchall()
     return render_template('Admin/data.htm',data=data)
 
@@ -197,7 +197,7 @@ def deleteBooks(id):
 @app.route('/rent')
 def viewBookings():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
-    mycursor.execute("SELECT *FROM bookings,books WHERE `bookings`.`bookId`=`books`.`bookId`")
+    mycursor.execute("SELECT *FROM bookings,books WHERE `bookings`.`bookId`=`books`.`bookId` ORDER BY bookings.id DESC")
     data = mycursor.fetchall()
     # return data 
     return render_template('Admin/bookings.htm',data=data)
@@ -217,10 +217,10 @@ def approveBooking(id):
 def reportView():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
     # selecting rent books
-    mycursor.execute("SELECT *FROM bookings,books WHERE `bookings`.`bookId`=`books`.`bookId`")
+    mycursor.execute("SELECT *FROM bookings,books WHERE `bookings`.`bookId`=`books`.`bookId` ORDER BY bookings.id DESC")
     booked = mycursor.fetchall()
     # select books
-    mycursor.execute("SELECT *FROM books WHERE status='1'")
+    mycursor.execute("SELECT *FROM books WHERE status='1' ")
     books = mycursor.fetchall()
     n=1
     return render_template('Admin/report.htm',booked=booked, books = books, n=n+1)
@@ -229,7 +229,7 @@ def reportView():
 @app.route('/manage')
 def manageUsers():
     if len(session) == 0: return render_template('login.htm',error='You must login First')
-    mycursor.execute("SELECT * FROM users WHERE status=1")
+    mycursor.execute("SELECT * FROM users WHERE status=1 ORDER BY id DESC")
     data = mycursor.fetchall()
     return render_template('Admin/manageUsers.htm',data=data)
 
